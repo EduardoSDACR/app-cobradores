@@ -1,5 +1,9 @@
 import express from "express";
 import { PORT } from "./config";
+import morgan from "morgan";
+
+// Routes
+import indexRoute from "./routes";
 
 export class Application {
   app: express.Application;
@@ -7,10 +11,22 @@ export class Application {
   constructor() {
     this.app = express();
     this.settings();
+    this.middlewares();
+    this.routes();
   }
 
   settings() {
     this.app.set("port", PORT);
+  }
+
+  middlewares() {
+    this.app.use(morgan("dev"));
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: false }));
+  }
+
+  routes() {
+    this.app.use("/", indexRoute);
   }
 
   start() {
