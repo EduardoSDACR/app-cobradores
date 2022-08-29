@@ -1,6 +1,7 @@
 import express from "express";
+import { PORT } from "./config";
 
-class Application {
+export class Application {
   app: express.Application;
 
   constructor() {
@@ -9,7 +10,7 @@ class Application {
   }
 
   settings() {
-    this.app.set("port", 8000);
+    this.app.set("port", PORT);
   }
 
   start() {
@@ -18,5 +19,3 @@ class Application {
     });
   }
 }
-
-export default Application;

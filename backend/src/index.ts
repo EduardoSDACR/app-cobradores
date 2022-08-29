@@ -1,6 +1,10 @@
-import App from "./app";
+import { Application } from "./app";
 import { connectToMongodb } from "./database";
 
-connectToMongodb();
-const app = new App();
-app.start();
+async function main() {
+  await connectToMongodb();
+  const app = new Application();
+  app.start();
+}
+
+main();
