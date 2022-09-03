@@ -1,4 +1,5 @@
-import { prop, getModelForClass } from "@typegoose/typegoose";
+import { prop, Ref, getModelForClass } from "@typegoose/typegoose";
+import { Payment } from "./Payment";
 
 class Client {
   @prop({ type: String, required: true })
@@ -7,6 +8,10 @@ class Client {
   lastname: string;
   @prop({ type: String, required: true, minlength: 8, maxlength: 8 })
   dni: string;
+  @prop({ type: String })
+  phone_number: string;
+  @prop({ ref: () => Payment })
+  payments: Ref<Payment>[];
 }
 
 const ClientModel = getModelForClass(Client);

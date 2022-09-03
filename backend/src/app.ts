@@ -3,7 +3,8 @@ import { PORT } from "./config";
 import morgan from "morgan";
 
 // Routes
-import indexRoute from "./routes";
+import clientsRoute from "./routes/clients";
+import paymentsRoute from "./routes/payments";
 
 export class Application {
   app: express.Application;
@@ -26,7 +27,8 @@ export class Application {
   }
 
   routes() {
-    this.app.use("/", indexRoute);
+    this.app.use("/clients", clientsRoute);
+    this.app.use("/payments", paymentsRoute);
   }
 
   start() {
