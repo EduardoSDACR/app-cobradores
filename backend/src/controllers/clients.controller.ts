@@ -25,12 +25,16 @@ export async function createClient(
   res: Response
 ): Promise<Response> {
   const { firstname, lastname, dni } = req.body;
-  const client = await Client.create({
-    firstname,
-    lastname,
-    dni,
-  });
-  return res.json(client);
+  try {
+    const client = await Client.create({
+      firstname,
+      lastname,
+      dni,
+    });
+    return res.json(client);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
 }
 
 export async function updateClient(
