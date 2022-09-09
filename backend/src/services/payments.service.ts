@@ -3,6 +3,7 @@ import Client from "../models/client.model";
 import PaymentDTO from "../core/dtos/payment.dto";
 import { createInvoice } from "../lib/createInvoice";
 import path from "path";
+import fs from "fs";
 
 export class PaymentService {
   static async find(id: string) {
@@ -61,7 +62,12 @@ export class PaymentService {
       invoice_nr: 1234,
     };
 
-    createInvoice(invoice, path.resolve("docs/example.pdf"));
+    const dir = path.resolve("docs");
+
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+    createInvoice(invoice, path.join(dir, "example.pdf"));
     return payment;
   }
 
