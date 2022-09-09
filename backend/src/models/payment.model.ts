@@ -1,4 +1,5 @@
-import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
+import { getModelForClass, modelOptions, prop, post } from "@typegoose/typegoose";
+import { NotFound } from "http-errors";
 
 enum States {
   paid = "Paid",
@@ -6,6 +7,11 @@ enum States {
   delayed = "Delayed",
 }
 
+@post<Payment>(["findOne", "findOneAndUpdate", "findOneAndDelete"], (payment) => {
+  if (payment === null) {
+    throw new NotFound("Payment not found");
+  }
+})
 @modelOptions({
   schemaOptions: {
     timestamps: true,

@@ -1,7 +1,13 @@
-import { prop, Ref, getModelForClass } from "@typegoose/typegoose";
-import { Payment } from "./Payment";
+import { prop, Ref, getModelForClass, post } from "@typegoose/typegoose";
+import { Payment } from "./payment.model";
+import { NotFound } from "http-errors";
 
-class Client {
+@post<Client>(["findOne", "findOneAndUpdate", "findOneAndDelete"], (client) => {
+  if (client === null) {
+    throw new NotFound("Client not found");
+  }
+})
+export class Client {
   @prop({ type: String, required: true })
   firstname: string;
   @prop({ type: String, required: true })
