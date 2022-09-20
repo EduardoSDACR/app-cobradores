@@ -12,6 +12,4 @@ router
   .get(expressAsyncHandler(getPayment))
   .delete(expressAsyncHandler(deletePayment));
 
-router.route("/pay/:payment_id").put(expressAsyncHandler(payPayment));
-
 export default router;

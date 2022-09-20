@@ -2,6 +2,7 @@ import express from "express";
 import { PORT } from "./config";
 import morgan from "morgan";
 import { errorHandler } from "./core/middlewares/error-handler.middleware";
+import path from "path";
 
 // Routes
 import clientsRoute from "./routes/clients.route";
@@ -33,6 +34,7 @@ export class Application {
     this.app.use("/clients", clientsRoute);
     this.app.use("/payments", paymentsRoute);
     this.app.use("/administrators", administratorsRoute);
+    this.app.use("/receipts", express.static(path.resolve("receipts")));
   }
 
   handlers() {

@@ -1,6 +1,6 @@
 import Client from "../models/client.model";
 import Administrator from "../models/administrator.model";
-import ClientDTO from "../core/dtos/cliente.dto";
+import ClientDTO from "../core/dtos/client.dto";
 
 export class ClientService {
   static async list() {

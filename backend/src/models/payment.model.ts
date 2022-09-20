@@ -1,5 +1,6 @@
-import { getModelForClass, modelOptions, prop, post } from "@typegoose/typegoose";
+import { getModelForClass, modelOptions, prop, post, pre } from "@typegoose/typegoose";
 import { NotFound } from "http-errors";
+import { HOST } from "../config";
 
 enum States {
   paid = "Paid",
@@ -28,6 +29,9 @@ export class Payment {
   days_late: number;
   @prop({ type: String })
   receipt: string;
+  public getAbsoluteReceiptURL() {
+    return HOST + this.receipt;
+  }
 }
 
 const PaymentModel = getModelForClass(Payment);

@@ -11,7 +11,7 @@ import {
   updateClient,
   deleteClient,
 } from "../controllers/clients.controller";
-import { getClientPayments, createPayment } from "../controllers/payments.controller";
+import { getClientPayments, createPayment, payPayment } from "../controllers/payments.controller";
 
 // Routes
 router.route("/").get(expressAsyncHandler(getClients)).post(expressAsyncHandler(createClient));
@@ -26,5 +26,7 @@ router
   .route("/:client_id/payments")
   .get(expressAsyncHandler(getClientPayments))
   .post(expressAsyncHandler(createPayment));
+
+router.route("/:client_id/payments/:payment_id/pay").put(expressAsyncHandler(payPayment));
 
 export default router;

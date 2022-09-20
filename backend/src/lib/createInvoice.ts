@@ -1,8 +1,11 @@
 import fs from "fs";
 import PDFDocument from "pdfkit";
+import ClientDTO from "../core/dtos/client.dto";
+import path from "path";
 
-export function createInvoice(invoice: any, path: fs.PathLike) {
+export function createInvoice(client: ClientDTO | null, id: string) {
   let doc = new PDFDocument({ size: "A4", margin: 50 });
+  let invoice = generateDataObject(client);
 
   generateHeader(doc);
   generateCustomerInformation(doc, invoice);
@@ -10,7 +13,42 @@ export function createInvoice(invoice: any, path: fs.PathLike) {
   generateFooter(doc);
 
   doc.end();
-  doc.pipe(fs.createWriteStream(path));
+  let dir = generateInvoiceDir(id);
+  let fileName = formatDate(new Date(), true) + ".pdf";
+  doc.pipe(fs.createWriteStream(dir + "/" + fileName));
+
+  return fileName;
+}
+
+function generateDataObject(client: ClientDTO | null) {
+  const invoice = {
+    shipping: {
+      name: client!.firstname,
+      address: "1234 Main Street",
+      city: "San Francisco",
+      state: "CA",
+      country: "US",
+      postal_code: 94111,
+    },
+    items: [
+      {
+        item: "TC 100",
+        description: "Toner Cartridge",
+        quantity: 2,
+        amount: 6000,
+      },
+      {
+        item: "USB_EXT",
+        description: "USB Cable Extender",
+        quantity: 1,
+        amount: 2000,
+      },
+    ],
+    subtotal: 8000,
+    paid: 0,
+    invoice_nr: 1234,
+  };
+  return invoice;
 }
 
 function generateHeader(doc: PDFKit.PDFDocument) {
@@ -56,22 +94,14 @@ function generateCustomerInformation(
     .text("Invoice Date:", 50, customerInformationTop + 15)
     .text(formatDate(new Date()), 150, customerInformationTop + 15)
     .text("Balance Due:", 50, customerInformationTop + 30)
-    .text(
-      formatCurrency(invoice.subtotal - invoice.paid),
-      150,
-      customerInformationTop + 30
-    )
+    .text(formatCurrency(invoice.subtotal - invoice.paid), 150, customerInformationTop + 30)
 
     .font("Helvetica-Bold")
     .text(invoice.shipping.name, 300, customerInformationTop)
     .font("Helvetica")
     .text(invoice.shipping.address, 300, customerInformationTop + 15)
     .text(
-      invoice.shipping.city +
-        ", " +
-        invoice.shipping.state +
-        ", " +
-        invoice.shipping.country,
+      invoice.shipping.city + ", " + invoice.shipping.state + ", " + invoice.shipping.country,
       300,
       customerInformationTop + 30
     )
@@ -117,15 +147,7 @@ function generateInvoiceTable(
   }
 
   const subtotalPosition = invoiceTableTop + (i + 1) * 30;
-  generateTableRow(
-    doc,
-    subtotalPosition,
-    "",
-    "",
-    "Subtotal",
-    "",
-    formatCurrency(invoice.subtotal)
-  );
+  generateTableRow(doc, subtotalPosition, "", "", "Subtotal", "", formatCurrency(invoice.subtotal));
 
   const paidToDatePosition = subtotalPosition + 20;
   generateTableRow(
@@ -153,14 +175,10 @@ function generateInvoiceTable(
 }
 
 function generateFooter(doc: PDFKit.PDFDocument) {
-  doc
-    .fontSize(10)
-    .text(
-      "Payment is due within 15 days. Thank you for your business.",
-      50,
-      780,
-      { align: "center", width: 500 }
-    );
+  doc.fontSize(10).text("Payment is due within 15 days. Thank you for your business.", 50, 780, {
+    align: "center",
+    width: 500,
+  });
 }
 
 function generateTableRow(
@@ -189,10 +207,20 @@ function formatCurrency(cents: number) {
   return "$" + (cents / 100).toFixed(2);
 }
 
-function formatDate(date: Date) {
+function formatDate(date: Date, isDirectory: boolean = false) {
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-
+  if (isDirectory) {
+    return year + "-" + month + "-" + day;
+  }
   return year + "/" + month + "/" + day;
+}
+
+function generateInvoiceDir(client_id: string) {
+  const dir = path.join(path.resolve("receipts"), client_id);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  return dir;
 }

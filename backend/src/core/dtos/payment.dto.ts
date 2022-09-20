@@ -1,9 +1,12 @@
 class PaymentDTO {
-  amount: number;
-  state: string;
-  payment_date: Date;
-  days_late: number;
+  readonly amount: number;
+  readonly state: string;
+  readonly payment_date: Date;
+  readonly days_late: number;
   receipt: string;
+  getAbsoluteReceiptURL(): string {
+    return "";
+  }
 }
 
 export default PaymentDTO;

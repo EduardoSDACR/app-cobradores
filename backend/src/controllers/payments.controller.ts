@@ -20,8 +20,8 @@ export async function createPayment(req: Request, res: Response): Promise<void> 
 }
 
 export async function payPayment(req: Request, res: Response): Promise<void> {
-  const { payment_id } = req.params;
-  const payment = await PaymentService.pay(payment_id);
+  const { client_id, payment_id } = req.params;
+  const payment = await PaymentService.pay(client_id, payment_id);
   res.status(200).json({ message: "Payment paid", payment });
 }
 
