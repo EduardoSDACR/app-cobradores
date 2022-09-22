@@ -12,13 +12,18 @@ import {
   deleteClient,
 } from "../controllers/clients.controller";
 import { getClientPayments, createPayment, payPayment } from "../controllers/payments.controller";
+import validateResource from "../core/middlewares/valideResource.middleware";
+import { createClientSchema, verifyClientSchema } from "../schemas/client.schema";
 
 // Routes
-router.route("/").get(expressAsyncHandler(getClients)).post(expressAsyncHandler(createClient));
+router
+  .route("/")
+  .get(expressAsyncHandler(getClients))
+  .post(validateResource(createClientSchema), expressAsyncHandler(createClient));
 
 router
   .route("/:client_id")
-  .get(expressAsyncHandler(getClient))
+  .get(validateResource(verifyClientSchema), expressAsyncHandler(getClient))
   .put(expressAsyncHandler(updateClient))
   .delete(expressAsyncHandler(deleteClient));
 

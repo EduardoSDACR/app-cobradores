@@ -14,7 +14,7 @@ export class Client {
   lastname: string;
   @prop({ type: String, required: true, minlength: 8, maxlength: 8 })
   dni: string;
-  @prop({ type: String })
+  @prop({ type: String, required: true })
   phone_number: string;
   @prop({ ref: () => Payment })
   payments: Ref<Payment>[];
