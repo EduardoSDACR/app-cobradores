@@ -1,5 +1,6 @@
 import express from "express";
 import { PORT } from "./config";
+import cors from "cors";
 import morgan from "morgan";
 import { errorHandler } from "./core/middlewares/error-handler.middleware";
 import path from "path";
@@ -26,6 +27,7 @@ export class Application {
 
   middlewares() {
     this.app.use(morgan("dev"));
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
   }
