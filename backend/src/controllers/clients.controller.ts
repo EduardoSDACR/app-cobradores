@@ -4,7 +4,7 @@ import { ClientService } from "../services/clients.service";
 
 export async function getClients(req: Request, res: Response): Promise<void> {
   const clients = await ClientService.list();
-  res.status(200).json({ clients });
+  res.status(200).json(clients);
 }
 
 export async function getClient(req: Request<VerifyClientInput>, res: Response): Promise<void> {

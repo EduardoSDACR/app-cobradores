@@ -1,18 +1,26 @@
-import 'package:flutter/material.dart';
-
 class Payment {
-  final String? state, paymentDate, receipt;
+  final String state, paymentDate, receipt;
   Payment({
-    this.state,
-    this.paymentDate,
-    this.receipt,
+    required this.state,
+    required this.paymentDate,
+    required this.receipt,
   });
 }
 
 List<Payment> payments = [
   Payment(
       state: "Paid",
-      paymentDate: "2022/05/12",
+      paymentDate: "2022/05/15",
       receipt:
-          "http://localhost:8000/receipts/6314be252bd5ea3ee5516047/2022-9-16.pdf")
+          "http://192.168.0.32:8000/receipts/6330651f771aac756ffdb621/2022-9-25.pdf"),
+  Payment(
+      state: "Paid",
+      paymentDate: "2022/05/17",
+      receipt:
+          "http://192.168.0.32:8000/receipts/6330651f771aac756ffdb621/2022-9-25.pdf"),
+  Payment(
+      state: "Paid",
+      paymentDate: "2022/05/20",
+      receipt:
+          "http://192.168.0.32:8000/receipts/6330651f771aac756ffdb621/2022-9-25.pdf")
 ];

@@ -4,7 +4,7 @@ import 'package:frontend/constants.dart';
 import 'package:frontend/screens/home/components/body.dart';
 //import 'package:frontend/screens/home/'
 
-class ClientsScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,13 +25,6 @@ class ClientsScreen extends StatelessWidget {
           IconButton(
             icon: SvgPicture.asset(
               "assets/icons/search.svg",
-              color: kTextColor,
-            ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/cart.svg",
               color: kTextColor,
             ),
             onPressed: () {},

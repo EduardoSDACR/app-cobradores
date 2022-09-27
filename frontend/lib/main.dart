@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/constants.dart';
-import 'package:frontend/screens/home/clients.dart';
+import 'package:frontend/cubit/app_cubit.dart';
+import 'package:frontend/cubit/app_cubit_logics.dart';
+import 'package:frontend/screens/home/home_screen.dart';
+import 'package:frontend/services/clients.service.dart';
 //import 'package:frontend/screens/home/home_screen.dart';
 
 void main() {
@@ -18,7 +22,12 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ClientsScreen(),
+      home: BlocProvider<AppCubits>(
+        create: (context) => AppCubits(
+          data: ClientService(),
+        ),
+        child: AppCubitLogics(),
+      ),
     );
   }
 }
